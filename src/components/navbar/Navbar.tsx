@@ -73,7 +73,7 @@ export function Navbar() {
 
     return (
         <Fragment>
-            <div style={{ width: '100%', height: '70px' }}></div>
+            <div style={{ width: '100%' }}></div>
             <nav
                 className={` bg-white fixed w-full z-30 top-0 ${
                     smallerThan600px && open
