@@ -1,4 +1,3 @@
-import React from 'react'
 import Cooking from '../../assets/cooking.png'
 import Music from '../../assets/music.png'
 import Painting from '../../assets/painting.png'

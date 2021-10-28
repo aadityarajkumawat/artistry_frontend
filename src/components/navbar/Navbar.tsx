@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import ArtistryIcon from '../../assets/Icon.svg'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { useStore } from '../../store'
@@ -38,10 +39,18 @@ const NavLinksList: React.FC<{
                         : 'justify-center'
                 }`}
             >
-                <li>Events</li>
-                <li>Host Event</li>
-                <li>Invite</li>
-                <li>Profile</li>
+                <li>
+                    <Link to='/events'>Events</Link>
+                </li>
+                <li>
+                    <Link to='/'>Host Event</Link>
+                </li>
+                <li>
+                    <Link to='/invites'>Invite</Link>
+                </li>
+                <li>
+                    <Link to='/events'>Profile</Link>
+                </li>
             </ul>
         </div>
     )
