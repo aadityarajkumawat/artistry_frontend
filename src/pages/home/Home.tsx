@@ -1,12 +1,12 @@
 import React from 'react'
-import { InterestCard } from '../../components/interest-card/InterestCard'
 import Cooking from '../../assets/cooking.png'
 import Music from '../../assets/music.png'
 import Painting from '../../assets/painting.png'
 import Pottery from '../../assets/pottery.png'
 import SocialWork from '../../assets/social-work.png'
+import { InterestCard } from '../../components/interest-card/InterestCard'
 
-interface HomeProps {}
+// interface HomeProps {}
 
 interface Interest {
     name: string

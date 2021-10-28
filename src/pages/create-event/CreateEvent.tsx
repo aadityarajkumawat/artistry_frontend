@@ -1,30 +1,97 @@
+import React, { useState } from 'react'
+import { useHistory } from 'react-router'
 import { Input } from '../../components/input/Input'
+import { pushToEvents } from '../../helpers/pushTo'
 
 interface CreateEventProps {
     interest: string
 }
 
+interface EventFormData {
+    eventName: string
+    date: any
+    timeStart: any
+    timeEnd: any
+    venue: string
+    description: string
+}
+
 export function CreateEvent({ interest }: CreateEventProps) {
+    const router = useHistory()
+
+    const [eventForm, setEventForm] = useState<EventFormData>(
+        {} as EventFormData,
+    )
+
+    function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+        let { name, value } = e.target
+        setEventForm((ef) => ({ ...ef, [name]: value }))
+    }
+
+    function onSubmitHandler(e: React.FormEvent<HTMLFormElement>) {
+        pushToEvents(router)
+    }
+
     return (
         <div className='h-full'>
             <div style={{ height: 50 }}></div>
             <div
-                className='bg-white bg-opacity-10 h-full flex items-center flex-col'
+                className='bg-white bg-opacity-10 flex items-center flex-col pt-8'
                 style={{ width: '100%' }}
             >
-                <h1 className='text-xl my-4'>Host an event</h1>
+                <h1 className='text-3xl font-bold my-4'>Host an event</h1>
                 <div className='w-80'>
                     <p className='mb-3'>Interest: {interest}Music</p>
 
-                    <form action=''>
+                    <form onSubmit={onSubmitHandler}>
                         <div className='mb-3'>
-                            <Input fieldName='Event Name' name='event-name' />
+                            <Input
+                                fieldName='Event Name'
+                                name='event-name'
+                                onChange={onChangeHandler}
+                                value={eventForm.eventName}
+                            />
                         </div>
                         <div className='mb-3'>
-                            <Input fieldName='Venue' name='venue' />
+                            <Input
+                                fieldName='Date'
+                                name='event-date'
+                                type='date'
+                                onChange={onChangeHandler}
+                                value={eventForm.date}
+                            />
+                        </div>
+                        <div className='flex justify-between mb-3'>
+                            <Input
+                                fieldName='Time Start'
+                                name='event-start-time'
+                                type='time'
+                                onChange={onChangeHandler}
+                                value={eventForm.timeStart}
+                            />
+                            <Input
+                                fieldName='Time End'
+                                name='event-end-time'
+                                type='time'
+                                onChange={onChangeHandler}
+                                value={eventForm.timeEnd}
+                            />
                         </div>
                         <div className='mb-3'>
-                            <Input fieldName='Description' name='description' />
+                            <Input
+                                fieldName='Venue'
+                                name='venue'
+                                onChange={onChangeHandler}
+                                value={eventForm.venue}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <Input
+                                fieldName='Description'
+                                name='description'
+                                onChange={onChangeHandler}
+                                value={eventForm.description}
+                            />
                         </div>
 
                         <input

@@ -1,4 +1,5 @@
-import React from 'react'
+import { useHistory } from 'react-router'
+import { pushToCreateEvent } from '../../helpers/pushTo'
 
 interface InterestCardProps {
     name: string
@@ -7,10 +8,13 @@ interface InterestCardProps {
 }
 
 export function InterestCard({ color, name, image }: InterestCardProps) {
+    const router = useHistory()
+
     return (
         <div
             className='w-40 mb-3 px-2 py-2 rounded-md mx-2'
             style={{ backgroundColor: color }}
+            onClick={() => pushToCreateEvent(router)}
         >
             <h1 className='mb-5'>{name}</h1>
             <img src={image} alt='' className='ml-auto w-12' />

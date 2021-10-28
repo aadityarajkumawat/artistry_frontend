@@ -3,6 +3,8 @@ import React from 'react'
 interface InputProps {
     name: string
     fieldName: string
+    value: string
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     type?: string
 }
 
@@ -13,6 +15,9 @@ export function Input(props: InputProps) {
             <input
                 type={props.type ? props.type : 'text'}
                 className='mt-1 bg-gray-200 h-8 rounded-sm border-2 border-gray-500 px-2'
+                onChange={props.onChange}
+                name={props.name}
+                value={props.value}
             />
         </div>
     )
