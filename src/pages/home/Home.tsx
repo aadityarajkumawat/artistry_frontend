@@ -23,16 +23,14 @@ export function Home() {
     ]
 
     return (
-        <div
-            style={{ height: 'calc(100% - 80px)' }}
-            className='flex items-center justify-center'
-        >
-            <div className='flex items-center justify-center flex-col'>
-                <h1 className='font-bold text-xl mb-6'>
+        <div className='flex items-center justify-center flex-col'>
+            <div style={{ height: 80 }}></div>
+            <div className='flex items-center justify-center flex-col pt-40'>
+                <h1 className='text-3xl font-bold my-4'>
                     Pick an interest for your event
                 </h1>
 
-                <div className='grid grid-cols-2'>
+                <div className='grid grid-cols-2 mt-3'>
                     {interests.map((interest, i) => (
                         <InterestCard key={i} {...interest} />
                     ))}

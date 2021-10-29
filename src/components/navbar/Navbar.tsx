@@ -11,16 +11,17 @@ const NavLinksList: React.FC<{
     smallerThan600px?: boolean
     onClick?: () => void
 }> = ({ smallerThan600px = false, onClick }) => {
-    const visible = useStore((s) => s.visible)
     const widerThan800px = useMediaQuery('(min-width: 800px)')
 
     return (
         <div
-            className={`bg-white w-full flex justify-between items-center px-10 ${
-                smallerThan600px ? 'absolute py-5 bg-gray' : ''
+            className={`bg-white w-full flex items-center px-10 ${
+                smallerThan600px
+                    ? 'absolute py-5 bg-gray justify-center'
+                    : 'justify-between'
             } ${styles.navLinks}`}
         >
-            {(visible === 'About' || visible === 'Our Team') && widerThan800px && (
+            {widerThan800px && (
                 <div
                     className={`flex items-center justify-center ${styles.icon}`}
                 >
@@ -30,25 +31,38 @@ const NavLinksList: React.FC<{
                         width='50px'
                         height='50px'
                     />
+                    <p className='text-xl ml-4 font-bold text-grey1'>
+                        Artistry
+                    </p>
                 </div>
             )}
             <ul
-                className={`flex m-auto ${
-                    smallerThan600px
-                        ? 'flex-col items-center'
-                        : 'justify-center'
+                className={`flex ${
+                    smallerThan600px ? 'flex-col items-center' : 'justify-end'
                 }`}
             >
-                <li>
+                <li
+                    onClick={onClick}
+                    className={!smallerThan600px ? 'mx-4' : ''}
+                >
                     <Link to='/events'>Events</Link>
                 </li>
-                <li>
+                <li
+                    onClick={onClick}
+                    className={!smallerThan600px ? 'mx-4' : ''}
+                >
                     <Link to='/'>Host Event</Link>
                 </li>
-                <li>
+                <li
+                    onClick={onClick}
+                    className={!smallerThan600px ? 'mx-4' : ''}
+                >
                     <Link to='/invites'>Invite</Link>
                 </li>
-                <li>
+                <li
+                    onClick={onClick}
+                    className={!smallerThan600px ? 'mx-4' : ''}
+                >
                     <Link to='/profile'>Profile</Link>
                 </li>
             </ul>
@@ -100,7 +114,7 @@ export function Navbar() {
                             />
                             <p className='ml-2'>Artistry</p>
                         </div>
-                        <div className='cursor-pointer h-full flex justify-center items-center mx-3 flex'>
+                        <div className='cursor-pointer h-full justify-center items-center mx-3 flex'>
                             <HamMenu onClick={toggleNavbar} open={open} />
                         </div>
                     </div>
@@ -124,7 +138,7 @@ export function Navbar() {
                 <Portal selector='backdrop'>
                     {open && smallerThan600px && (
                         <div
-                            className={`absolute w-full h-screen bg-gray left-0 right-0 z-10 opacity-60 ${styles.backdrop}`}
+                            className={`absolute w-full h-screen bg-gray left-0 right-0 z-10 opacity-60 bg-grey1`}
                             onClick={closeNavLinks}
                             style={{ top: window.scrollY }}
                         ></div>

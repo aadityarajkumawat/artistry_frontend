@@ -24,6 +24,16 @@ export function Events() {
             timeTo: '01:30',
             venue: 'M-55, Kesari Road',
         },
+        {
+            title: 'An engaging event about pottery, display your skills',
+            date: '28-10-2021',
+            description:
+                'Even if your have no idea about pottery you can still join and learn alongside your peers',
+            link: '',
+            timeFrom: '12:00',
+            timeTo: '01:30',
+            venue: 'M-55, Kesari Road',
+        },
     ]
 
     const yourEvents: Array<EventType> = [
