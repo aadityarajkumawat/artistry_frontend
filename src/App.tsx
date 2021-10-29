@@ -5,6 +5,7 @@ import { CreateEvent } from './pages/create-event/CreateEvent'
 import { Events } from './pages/events/Events'
 import { Home } from './pages/home/Home'
 import { Invites } from './pages/invites/Invites'
+import { Profile } from './pages/profile/Profile'
 
 function App() {
     const router = useHistory()
@@ -16,6 +17,7 @@ function App() {
                 <Route exact path='/create-event' component={CreateEvent} />
                 <Route exact path='/events' component={Events} />
                 <Route exact path='/invites' component={Invites} />
+                <Route exact path='/profile' component={Profile} />
             </Switch>
         </div>
     )

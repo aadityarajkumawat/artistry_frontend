@@ -49,7 +49,7 @@ const NavLinksList: React.FC<{
                     <Link to='/invites'>Invite</Link>
                 </li>
                 <li>
-                    <Link to='/events'>Profile</Link>
+                    <Link to='/profile'>Profile</Link>
                 </li>
             </ul>
         </div>
