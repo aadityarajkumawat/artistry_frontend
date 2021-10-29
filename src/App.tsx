@@ -5,7 +5,9 @@ import { CreateEvent } from './pages/create-event/CreateEvent'
 import { Events } from './pages/events/Events'
 import { Home } from './pages/home/Home'
 import { Invites } from './pages/invites/Invites'
+import { Login } from './pages/login/Login'
 import { Profile } from './pages/profile/Profile'
+import { Register } from './pages/register/Register'
 
 function App() {
     const router = useHistory()
@@ -18,6 +20,8 @@ function App() {
                 <Route exact path='/events' component={Events} />
                 <Route exact path='/invites' component={Invites} />
                 <Route exact path='/profile' component={Profile} />
+                <Route exact path='/login' component={Login} />
+                <Route exact path='/register' component={Register} />
             </Switch>
         </div>
     )

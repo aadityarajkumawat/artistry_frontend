@@ -73,7 +73,7 @@ export function Events() {
                         {toggleEvents ? 'Upcoming Events' : 'Your Events'}
                     </button>
                 </div>
-                <div className='grid grid-cols-1 gap-20 mt-5 px-7 s-800:grid-cols-2 pb-14'>
+                <div className='grid grid-cols-1 gap-5 mt-5 px-7 s-800:grid-cols-2 pb-14'>
                     {(!toggleEvents ? upcomingEvents : yourEvents).map(
                         (event, idx) => (
                             <Event key={idx} {...event} />

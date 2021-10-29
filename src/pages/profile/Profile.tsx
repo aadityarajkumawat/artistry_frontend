@@ -25,7 +25,7 @@ export function Profile() {
                 <div className='text-center'>
                     <div
                         style={{ width: 120, height: 120 }}
-                        className='bg-grey1 m-auto mb-3'
+                        className='bg-grey1 m-auto mb-3 rounded-full'
                     >
                         <img
                             src={props.image}

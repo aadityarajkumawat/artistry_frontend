@@ -16,12 +16,12 @@ interface EventFormData {
     description: string
 }
 
+const eventFormDataInit = {} as EventFormData
+
 export function CreateEvent({ interest }: CreateEventProps) {
     const router = useHistory()
 
-    const [eventForm, setEventForm] = useState<EventFormData>(
-        {} as EventFormData,
-    )
+    const [eventForm, setEventForm] = useState<EventFormData>(eventFormDataInit)
 
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         let { name, value } = e.target
