@@ -36,7 +36,7 @@ export function Invites() {
                         Invite people to Artistry
                     </button>
                 </div>
-                <div className='grid grid-cols-1 gap-20 mt-5 px-7 s-800:grid-cols-2'>
+                <div className='grid grid-cols-1 gap-20 mt-5 px-7 s-800:grid-cols-2 pb-14'>
                     {invites.map((invite, idx) => (
                         <div
                             key={idx}

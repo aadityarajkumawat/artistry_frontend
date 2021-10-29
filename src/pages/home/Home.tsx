@@ -25,8 +25,8 @@ export function Home() {
     return (
         <div className='flex items-center justify-center flex-col'>
             <div style={{ height: 80 }}></div>
-            <div className='flex items-center justify-center flex-col pt-40'>
-                <h1 className='text-3xl font-bold my-4'>
+            <div className='flex items-center justify-center flex-col'>
+                <h1 className='text-2xl font-bold my-4 text-center'>
                     Pick an interest for your event
                 </h1>
 

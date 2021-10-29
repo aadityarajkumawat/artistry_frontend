@@ -23,12 +23,17 @@ export function Profile() {
                 style={{ width: '100%' }}
             >
                 <div className='text-center'>
-                    <img
-                        src={props.image}
-                        alt=''
-                        style={{ width: 120 }}
-                        className='rounded-full m-auto'
-                    />
+                    <div
+                        style={{ width: 120, height: 120 }}
+                        className='bg-grey1 m-auto mb-3'
+                    >
+                        <img
+                            src={props.image}
+                            alt=''
+                            style={{ width: 120 }}
+                            className='rounded-full m-auto'
+                        />
+                    </div>
                     <p className='font-bold'>{props.name}</p>
                     <p>{props.bio}</p>
                 </div>
