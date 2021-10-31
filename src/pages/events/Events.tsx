@@ -1,51 +1,27 @@
 import { useState } from 'react'
+import { useQuery } from 'urql'
 import { Event } from '../../components/event/Event'
+import { GET_ALL_EVENTS } from '../../graphql/getAllEvents'
 import { Event as EventType } from '../../types'
 
 export function Events() {
-    const upcomingEvents: Array<EventType> = [
-        {
-            title: 'Some cool event, about painting',
-            date: '20-09-2021',
-            description:
-                'Let’s do some fun painting activities, and a mini-contest',
-            link: '',
-            timeFrom: '12:00',
-            timeTo: '01:30',
-            venue: 'B-43 Shanti Nagar',
-        },
-        {
-            title: 'An engaging event about pottery, display your skills',
-            date: '28-10-2021',
-            description:
-                'Even if your have no idea about pottery you can still join and learn alongside your peers',
-            link: '',
-            timeFrom: '12:00',
-            timeTo: '01:30',
-            venue: 'M-55, Kesari Road',
-        },
-        {
-            title: 'An engaging event about pottery, display your skills',
-            date: '28-10-2021',
-            description:
-                'Even if your have no idea about pottery you can still join and learn alongside your peers',
-            link: '',
-            timeFrom: '12:00',
-            timeTo: '01:30',
-            venue: 'M-55, Kesari Road',
-        },
-    ]
+    const [upcomingEventsResponse] = useQuery<{
+        getEvents: { events: Array<EventType> }
+    }>({
+        query: GET_ALL_EVENTS,
+    })
 
     const yourEvents: Array<EventType> = [
         {
-            title: 'An engaging event about pottery, display your skills',
+            eventName: 'An engaging event about pottery, display your skills',
             date: '28-10-2021',
             description:
                 'Even if your have no idea about pottery you can still join and learn alongside your peers',
             link: '',
-            timeFrom: '12:00',
-            timeTo: '01:30',
+            timeStart: '12:00',
+            timeEnd: '01:30',
             venue: 'M-55, Kesari Road',
+            organizer: 'Aditya Raj Kumawat',
         },
     ]
 
@@ -73,13 +49,20 @@ export function Events() {
                         {toggleEvents ? 'Upcoming Events' : 'Your Events'}
                     </button>
                 </div>
-                <div className='grid grid-cols-1 gap-5 mt-5 px-7 s-800:grid-cols-2 pb-14'>
-                    {(!toggleEvents ? upcomingEvents : yourEvents).map(
-                        (event, idx) => (
+                {upcomingEventsResponse.fetching ? (
+                    <div>spinning wheel</div>
+                ) : (
+                    <div className='grid grid-cols-1 gap-5 mt-5 px-7 s-800:grid-cols-2 pb-14'>
+                        {(!toggleEvents
+                            ? upcomingEventsResponse.data
+                                ? upcomingEventsResponse.data.getEvents.events
+                                : []
+                            : yourEvents
+                        ).map((event, idx) => (
                             <Event key={idx} {...event} />
-                        ),
-                    )}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )

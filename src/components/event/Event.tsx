@@ -7,11 +7,12 @@ export function Event(event: EventType) {
         <div className='mb-5 w-full max-w-sm lg:mb-10 lg:w-event-base text-grey1'>
             <p className='text-base sm:text-lg'>{event.date}</p>
             <h1 className='text-xl lg:text-3xl font-bold underline'>
-                {event.title}
+                {event.eventName}
             </h1>
-            <div className='flex text-sm sm:text-base lg:text-lg my-1'>
+            <div className='flex flex-col text-sm sm:text-base lg:text-lg my-1'>
+                <p>Organizer: {event.organizer}</p>
                 <p>
-                    {event.timeFrom} - {event.timeTo}
+                    {event.timeStart} - {event.timeEnd}
                 </p>
                 <p className='ml-1'>@ {event.venue}</p>
             </div>

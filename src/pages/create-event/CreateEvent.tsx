@@ -36,10 +36,13 @@ export function CreateEvent() {
     async function onSubmitHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         if (appContext.selectedInterest) {
-            await createEvent({
-                ...eventForm,
-                interest: appContext.selectedInterest,
-            })
+            await createEvent(
+                {
+                    ...eventForm,
+                    interest: appContext.selectedInterest,
+                },
+                { additionalTypenames: ['GetEventsResponse'] },
+            )
         }
         pushToEvents(router)
     }

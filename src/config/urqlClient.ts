@@ -2,8 +2,8 @@ import { devtoolsExchange } from '@urql/devtools'
 import { cacheExchange } from '@urql/exchange-graphcache'
 import {
     createClient,
-    defaultExchanges,
     dedupExchange,
+    defaultExchanges,
     fetchExchange,
 } from 'urql'
 
