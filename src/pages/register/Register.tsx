@@ -2,6 +2,9 @@ import { useState } from 'react'
 import ArtistryLogo from '../../assets/Icon.svg'
 import { Input } from '../../components/input/Input'
 import { Link } from 'react-router-dom'
+import { useMutation } from 'urql'
+import { REGISTER } from '../../graphql/register'
+import { useHistory } from 'react-router'
 
 interface RegisterForm {
     name: string
@@ -12,9 +15,12 @@ interface RegisterForm {
 }
 
 export function Register() {
+    const router = useHistory()
     const [registerForm, setRegisterForm] = useState<RegisterForm>(
         {} as RegisterForm,
     )
+
+    const [, registerUser] = useMutation<any, RegisterForm>(REGISTER)
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         let { name, value } = e.target
@@ -35,7 +41,20 @@ export function Register() {
                 </div>
                 <p className='mt-3'>A brief description about artistry</p>
             </div>
-            <form className='my-3 w-80'>
+            <form
+                className='my-3 w-80'
+                onSubmit={async (e) => {
+                    e.preventDefault()
+                    const res = await registerUser({ ...registerForm })
+                    if (
+                        res.data &&
+                        res.data.register &&
+                        res.data.register.user.id
+                    ) {
+                        router.push('/')
+                    }
+                }}
+            >
                 <div className='mb-1'>
                     <Input
                         fieldName='Name'

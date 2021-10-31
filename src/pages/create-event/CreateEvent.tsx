@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router'
+import { useMutation } from 'urql'
 import { Input } from '../../components/input/Input'
+import { AppContext, AppContextType } from '../../context/AppContext'
+import { CREATE_EVENT } from '../../graphql/createEvent'
 import { pushToEvents } from '../../helpers/pushTo'
-
-interface CreateEventProps {
-    interest: string
-}
 
 interface EventFormData {
     eventName: string
@@ -16,19 +15,32 @@ interface EventFormData {
     description: string
 }
 
-const eventFormDataInit = {} as EventFormData
+interface CreateEventInput extends EventFormData {
+    interest: string
+}
 
-export function CreateEvent({ interest }: CreateEventProps) {
+export function CreateEvent() {
     const router = useHistory()
+    const appContext = useContext<AppContextType>(AppContext)
 
-    const [eventForm, setEventForm] = useState<EventFormData>(eventFormDataInit)
+    const [eventForm, setEventForm] = useState<EventFormData>(
+        {} as EventFormData,
+    )
+    const [, createEvent] = useMutation<any, CreateEventInput>(CREATE_EVENT)
 
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         let { name, value } = e.target
         setEventForm((ef) => ({ ...ef, [name]: value }))
     }
 
-    function onSubmitHandler(e: React.FormEvent<HTMLFormElement>) {
+    async function onSubmitHandler(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        if (appContext.selectedInterest) {
+            await createEvent({
+                ...eventForm,
+                interest: appContext.selectedInterest,
+            })
+        }
         pushToEvents(router)
     }
 
@@ -41,13 +53,15 @@ export function CreateEvent({ interest }: CreateEventProps) {
             >
                 <h1 className='text-3xl font-bold my-4'>Host an event</h1>
                 <div className='w-80'>
-                    <p className='mb-3'>Interest: {interest}Music</p>
+                    <p className='mb-3'>
+                        Interest: {appContext.selectedInterest}
+                    </p>
 
                     <form onSubmit={onSubmitHandler}>
                         <div className='mb-3'>
                             <Input
                                 fieldName='Event Name'
-                                name='event-name'
+                                name='eventName'
                                 onChange={onChangeHandler}
                                 value={eventForm.eventName}
                             />
@@ -55,7 +69,7 @@ export function CreateEvent({ interest }: CreateEventProps) {
                         <div className='mb-3'>
                             <Input
                                 fieldName='Date'
-                                name='event-date'
+                                name='eventDate'
                                 type='date'
                                 onChange={onChangeHandler}
                                 value={eventForm.date}
@@ -64,14 +78,14 @@ export function CreateEvent({ interest }: CreateEventProps) {
                         <div className='flex justify-between mb-3'>
                             <Input
                                 fieldName='Time Start'
-                                name='event-start-time'
+                                name='timeStart'
                                 type='time'
                                 onChange={onChangeHandler}
                                 value={eventForm.timeStart}
                             />
                             <Input
                                 fieldName='Time End'
-                                name='event-end-time'
+                                name='timeEnd'
                                 type='time'
                                 onChange={onChangeHandler}
                                 value={eventForm.timeEnd}

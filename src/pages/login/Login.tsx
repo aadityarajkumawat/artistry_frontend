@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import ArtistryLogo from '../../assets/Icon.svg'
 import { Input } from '../../components/input/Input'
 import { Link } from 'react-router-dom'
+import { useMutation } from 'urql'
+import { LOGIN } from '../../graphql/login'
+import { useHistory } from 'react-router'
 
 interface LoginForm {
     email: string
@@ -11,6 +14,9 @@ interface LoginForm {
 export function Login() {
     const [loginForm, setLoginForm] = useState<LoginForm>({} as LoginForm)
     const { email, password } = loginForm
+    const router = useHistory()
+
+    const [, loginUser] = useMutation<any, LoginForm>(LOGIN)
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         let { name, value } = e.target
@@ -31,7 +37,16 @@ export function Login() {
                 </div>
                 <p className='mt-3'>A brief description about artistry</p>
             </div>
-            <form className='my-6 w-80'>
+            <form
+                className='my-6 w-80'
+                onSubmit={async (e) => {
+                    e.preventDefault()
+                    const res = await loginUser({ ...loginForm })
+                    if (res.data && res.data.login && res.data.login.user.id) {
+                        router.push('/')
+                    }
+                }}
+            >
                 <div className='mb-1'>
                     <Input
                         fieldName='Email'
