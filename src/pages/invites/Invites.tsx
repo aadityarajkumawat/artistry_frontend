@@ -1,27 +1,22 @@
-interface InviteType {
-    image: string
-    name: string
-    bio: string
-    description: string
+import { useMutation, useQuery } from 'urql'
+import { ACCEPT_INVITE } from '../../graphql/acceptInvite'
+import { GET_INVITES } from '../../graphql/getInvites'
+import { InviteType } from '../../types'
+
+interface GetInvitesQuery {
+    getInvites: {
+        invites: Array<InviteType>
+    }
 }
 
 export function Invites() {
-    const invites: Array<InviteType> = [
-        {
-            image: '',
-            name: 'Ram Sharma',
-            description:
-                'Here, we will put some invitation message, but for now i am just putting some text to fill this space',
-            bio: 'music is nice',
-        },
-        {
-            image: '',
-            name: 'Ram Sharma',
-            description:
-                'Here, we will put some invitation message, but for now i am just putting some text to fill this space',
-            bio: 'music is nice',
-        },
-    ]
+    const [{ data, fetching }] = useQuery<GetInvitesQuery>({
+        query: GET_INVITES,
+    })
+
+    // console.log(data)
+
+    const [, acceptInvite] = useMutation<any, { invite: number }>(ACCEPT_INVITE)
 
     return (
         <div className='h-full'>
@@ -36,40 +31,69 @@ export function Invites() {
                         Invite people to Artistry
                     </button>
                 </div>
-                <div className='grid grid-cols-1 gap-20 mt-5 px-7 s-800:grid-cols-2 pb-14'>
-                    {invites.map((invite, idx) => (
-                        <div
-                            key={idx}
-                            className='border-2 border-grey2 rounded-md flex flex-col p-4 max-w-lg'
-                        >
-                            <div className='flex items-center'>
-                                <img
-                                    src={invite.image}
-                                    alt='user'
-                                    className='bg-grey3 mr-3 rounded-full'
-                                    style={{
-                                        width: 60,
-                                        height: 60,
-                                    }}
-                                />
-                                <div>
-                                    <p className='font-bold'>{invite.name}</p>
-                                    <p className='text-grey1'>{invite.bio}</p>
+                {!fetching ? (
+                    <div className='grid grid-cols-1 gap-20 mt-5 px-7 s-800:grid-cols-2 pb-14'>
+                        {(data ? data.getInvites.invites : []).map(
+                            (invite, idx) => (
+                                <div
+                                    key={idx}
+                                    className='border-2 border-grey2 rounded-md flex flex-col p-4 max-w-lg'
+                                >
+                                    <div className='flex items-center'>
+                                        <img
+                                            src={invite.fromUser.Profile?.image}
+                                            alt='user'
+                                            className='bg-grey3 mr-3 rounded-full'
+                                            style={{
+                                                width: 60,
+                                                height: 60,
+                                            }}
+                                        />
+                                        <div>
+                                            <p className='font-bold'>
+                                                {invite.event.eventName}
+                                            </p>
+                                            <p className='text-grey1'>
+                                                {invite.event.organizer}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='my-2 text-grey1'>
+                                        <p className='font-bold'>
+                                            Interest: {invite.event.interest}
+                                        </p>
+                                        <p>{invite.event.description}</p>
+                                    </div>
+                                    <div>
+                                        <button
+                                            className='bg-purple py-1 px-3 rounded-md'
+                                            onClick={async () => {
+                                                await acceptInvite(
+                                                    {
+                                                        invite: parseInt(
+                                                            invite.id,
+                                                        ),
+                                                    },
+                                                    {
+                                                        additionalTypenames: [
+                                                            'GetInvitesResponse',
+                                                        ],
+                                                    },
+                                                )
+                                            }}
+                                        >
+                                            {!invite.status
+                                                ? 'Accept Invite'
+                                                : 'Accepted'}
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='my-2'>
-                                <p className='text-grey1'>
-                                    {invite.description}
-                                </p>
-                            </div>
-                            <div>
-                                <button className='bg-purple py-1 px-3 rounded-md'>
-                                    Accept Invite
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                            ),
+                        )}
+                    </div>
+                ) : (
+                    <div>spinning wheel</div>
+                )}
             </div>
         </div>
     )

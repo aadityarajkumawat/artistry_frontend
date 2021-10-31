@@ -8,3 +8,16 @@ export interface Event {
     link: string | null
     organizer: string
 }
+
+export interface InviteType {
+    id: string
+    status: boolean
+    event: {
+        id: number
+        eventName: string
+        description: string
+        interest: string
+        organizer: string
+    }
+    fromUser: { Profile: { image: string } | null }
+}

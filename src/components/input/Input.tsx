@@ -3,9 +3,10 @@ import React from 'react'
 interface InputProps {
     name: string
     fieldName: string
-    value: string
+    value?: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     type?: string
+    disabled?: boolean
 }
 
 export function Input(props: InputProps) {
@@ -18,6 +19,7 @@ export function Input(props: InputProps) {
                 onChange={props.onChange}
                 name={props.name}
                 value={props.value}
+                disabled={props.disabled || false}
             />
         </div>
     )
