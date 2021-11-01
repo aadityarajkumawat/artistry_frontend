@@ -1,8 +1,8 @@
-import { gql } from 'urql'
+import { gql } from '@urql/core'
 
-export const GET_ALL_EVENTS = gql`
-    query GetEvents {
-        getEvents {
+export const GET_MY_EVENTS = gql`
+    query GetMyEvents {
+        getMyEvents {
             events {
                 id
                 userId
@@ -13,7 +13,6 @@ export const GET_ALL_EVENTS = gql`
                 description
                 interest
                 organizer
-                joined
             }
             error
         }

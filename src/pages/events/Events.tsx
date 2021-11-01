@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { useQuery } from 'urql'
 import { Event } from '../../components/event/Event'
+import { SpinningWheel } from '../../components/spinning-wheel/SpinningWheel'
 import { GET_ALL_EVENTS } from '../../graphql/getAllEvents'
+import { GET_MY_EVENTS } from '../../graphql/getMyEvents'
+import { ME } from '../../graphql/me'
 import { Event as EventType } from '../../types'
 
 export function Events() {
@@ -11,21 +14,15 @@ export function Events() {
         query: GET_ALL_EVENTS,
     })
 
-    const yourEvents: Array<EventType> = [
-        {
-            eventName: 'An engaging event about pottery, display your skills',
-            date: '28-10-2021',
-            description:
-                'Even if your have no idea about pottery you can still join and learn alongside your peers',
-            link: '',
-            timeStart: '12:00',
-            timeEnd: '01:30',
-            venue: 'M-55, Kesari Road',
-            organizer: 'Aditya Raj Kumawat',
-        },
-    ]
+    const [myEventsResponse] = useQuery<{
+        getMyEvents: { events: Array<EventType> }
+    }>({ query: GET_MY_EVENTS })
 
-    const [toggleEvents, setToggleEvents] = useState(false)
+    const [me] = useQuery<{ me: { user: { id: number } } }>({ query: ME })
+
+    const [toggleEvents, setToggleEvents] = useState<boolean>(false)
+    // const [currentEvent, setCurrentEvent] = useState<number>(0)
+    // const appContext = useContext<AppContextType>(AppContext)
 
     function toggle() {
         setToggleEvents((o) => !o)
@@ -49,17 +46,29 @@ export function Events() {
                         {toggleEvents ? 'Upcoming Events' : 'Your Events'}
                     </button>
                 </div>
-                {upcomingEventsResponse.fetching ? (
-                    <div>spinning wheel</div>
+                {upcomingEventsResponse.fetching ||
+                myEventsResponse.fetching ||
+                me.fetching ? (
+                    <SpinningWheel />
                 ) : (
                     <div className='grid grid-cols-1 gap-5 mt-5 px-7 s-800:grid-cols-2 pb-14'>
                         {(!toggleEvents
                             ? upcomingEventsResponse.data
                                 ? upcomingEventsResponse.data.getEvents.events
                                 : []
-                            : yourEvents
+                            : myEventsResponse.data
+                            ? myEventsResponse.data.getMyEvents.events
+                            : []
                         ).map((event, idx) => (
-                            <Event key={idx} {...event} />
+                            <Event
+                                key={idx}
+                                event={event}
+                                isHostedByMe={
+                                    me.data
+                                        ? me.data.me.user.id !== event.userId
+                                        : false
+                                }
+                            />
                         ))}
                     </div>
                 )}

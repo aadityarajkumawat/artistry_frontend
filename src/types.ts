@@ -7,6 +7,9 @@ export interface Event {
     description: string
     link: string | null
     organizer: string
+    id: number
+    userId: number
+    joined: boolean
 }
 
 export interface InviteType {

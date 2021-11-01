@@ -1,8 +1,37 @@
-import { useHistory } from 'react-router'
+import { useContext } from 'react'
+import { useMutation } from 'urql'
+import { AppContext, AppContextType } from '../../context/AppContext'
+import { JOIN_EVENT } from '../../graphql/joinEvent'
 import { Event as EventType } from '../../types'
+import { InviteList } from '../invite-list/InviteList'
+import Portal from '../portal/Portal'
 
-export function Event(event: EventType) {
-    const router = useHistory()
+interface EventProps {
+    event: EventType
+    isHostedByMe: boolean
+}
+
+export function Event({ event, isHostedByMe: notHostedByMe }: EventProps) {
+    const [, joinEvent] = useMutation<any, { event: number }>(JOIN_EVENT)
+    const appContext = useContext<AppContextType>(AppContext)
+
+    async function handleEventClick() {
+        if (notHostedByMe) {
+            await joinEvent(
+                { event: parseInt(event.id as unknown as string) },
+                {
+                    additionalTypenames: [
+                        'GetEventsResponseJoined',
+                        'GetProfileResponse',
+                    ],
+                },
+            )
+        } else {
+            appContext.setEvent(event.id)
+            appContext.openInviteList()
+        }
+    }
+
     return (
         <div className='mb-5 w-full max-w-sm lg:mb-10 lg:w-event-base text-grey1'>
             <p className='text-base sm:text-lg'>{event.date}</p>
@@ -17,12 +46,30 @@ export function Event(event: EventType) {
                 <p className='ml-1'>@ {event.venue}</p>
             </div>
             <p>{event.description}</p>
+
             <button
-                className='bg-blue px-5 py-1 rounded-md my-2'
-                onClick={() => router.push(event.link || '!#')}
+                className={`${
+                    notHostedByMe ? 'bg-blue' : 'bg-purple'
+                } px-5 py-1 rounded-md my-2`}
+                onClick={handleEventClick}
             >
-                Join Event
+                {!notHostedByMe
+                    ? 'Invite People'
+                    : event.joined
+                    ? 'Cancel'
+                    : 'Join Event'}
             </button>
+            {appContext.showInviteList && (
+                <Portal selector='backdrop'>
+                    <div
+                        className={`absolute w-full h-screen left-0 right-0 z-30 bg-opacity-60 bg-grey1 flex justify-center items-center`}
+                        onClick={() => appContext.closeInviteList()}
+                        style={{ top: window.scrollY }}
+                    >
+                        <InviteList />
+                    </div>
+                </Portal>
+            )}
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { useMutation } from 'urql'
 import { Input } from '../../components/input/Input'
 import { AppContext, AppContextType } from '../../context/AppContext'
 import { CREATE_EVENT } from '../../graphql/createEvent'
-import { pushToEvents } from '../../helpers/pushTo'
+import { pushToEventCreated } from '../../helpers/pushTo'
 
 interface EventFormData {
     eventName: string
@@ -44,7 +44,7 @@ export function CreateEvent() {
                 { additionalTypenames: ['GetEventsResponse'] },
             )
         }
-        pushToEvents(router)
+        pushToEventCreated(router)
     }
 
     return (

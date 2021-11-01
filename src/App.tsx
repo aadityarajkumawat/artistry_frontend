@@ -5,6 +5,7 @@ import { useQuery } from 'urql'
 import { Navbar } from './components/navbar/Navbar'
 import { ME } from './graphql/me'
 import { CreateEvent } from './pages/create-event/CreateEvent'
+import { EventCreated } from './pages/event-created/EventCreated'
 import { Events } from './pages/events/Events'
 import { Home } from './pages/home/Home'
 import { Invites } from './pages/invites/Invites'
@@ -63,6 +64,11 @@ function App() {
                 <Route exact path='/events' component={Events} />
                 <PrivateRoute exact path='/invites' component={Invites} />
                 <PrivateRoute exact path='/profile' component={Profile} />
+                <PrivateRoute
+                    exact
+                    path='/event-created'
+                    component={EventCreated}
+                />
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/register' component={Register} />
             </Switch>

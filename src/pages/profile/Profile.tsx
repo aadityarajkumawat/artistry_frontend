@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { useQuery } from 'urql'
+import { useHistory } from 'react-router'
+import { useMutation, useQuery } from 'urql'
 import { EditProfile } from '../../components/edit-profile/EditProfile'
 import Portal from '../../components/portal/Portal'
 import { GET_PROFILE } from '../../graphql/getProfile'
+import { LOGOUT } from '../../graphql/logout'
 
 interface ProfileProps {
     image: string
@@ -16,8 +18,10 @@ export function Profile() {
     const [{ data, fetching }] = useQuery<{
         getProfile: { profile: ProfileProps; error: string | null }
     }>({ query: GET_PROFILE })
+    const [, logout] = useMutation(LOGOUT)
 
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
+    const router = useHistory()
 
     return (
         <div className='h-full text-center text-grey1'>
@@ -40,6 +44,7 @@ export function Profile() {
                         )}
                         {!fetching &&
                             data &&
+                            data.getProfile &&
                             data.getProfile.profile.image !== null && (
                                 <div
                                     style={{ width: 120, height: 120 }}
@@ -120,7 +125,7 @@ export function Profile() {
                 <div>
                     <button
                         onClick={() => setShowEditModal((b) => !b)}
-                        className='w-40 py-2 rounded-sm mt-4'
+                        className='w-40 py-2 rounded-sm mt-4 mx-2'
                         style={{
                             background:
                                 'linear-gradient(90.7deg, rgba(255, 209, 250, 0.92) 5.75%, rgba(194, 226, 255, 0.94) 95.45%)',
@@ -129,6 +134,21 @@ export function Profile() {
                         }}
                     >
                         Edit Profile
+                    </button>
+                    <button
+                        onClick={async () => {
+                            await logout()
+                            router.push('/')
+                        }}
+                        className='w-40 py-2 rounded-sm mt-4 mx-2'
+                        style={{
+                            background:
+                                'linear-gradient(90.7deg, rgba(255, 209, 250, 0.92) 5.75%, rgba(194, 226, 255, 0.94) 95.45%)',
+                            boxShadow:
+                                '4px 4px 4px rgba(0, 0, 0, 0.06), -4px 0px 4px rgba(0, 0, 0, 0.06)',
+                        }}
+                    >
+                        Logout
                     </button>
                 </div>
             </div>
@@ -142,6 +162,7 @@ export function Profile() {
                         <EditProfile
                             bio={data.getProfile.profile.bio}
                             name={data.getProfile.profile.name}
+                            closeModal={() => setShowEditModal(false)}
                         />
                     </div>
                 </Portal>

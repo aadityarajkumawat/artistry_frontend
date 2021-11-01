@@ -16,7 +16,11 @@ interface ProfileFormType {
     bio: string
 }
 
-export function EditProfile({ bio, name }: EditProfileProps) {
+export function EditProfile({
+    bio,
+    name,
+    closeModal,
+}: EditProfileProps & { closeModal: () => void }) {
     const [profile, setProfile] = useState<ProfileFormType>({
         bio,
         image: new File([''], ''),
@@ -68,6 +72,7 @@ export function EditProfile({ bio, name }: EditProfileProps) {
             )
         }
         setSaving(false)
+        closeModal()
     }
 
     return (
@@ -108,7 +113,7 @@ export function EditProfile({ bio, name }: EditProfileProps) {
                     <input
                         disabled={saving}
                         type='submit'
-                        value={!saving ? 'Save Changes' : 'Saving Changes...'}
+                        value={!saving ? 'Save Changes' : 'Saving...'}
                         className='w-full py-2 rounded-sm mt-4 cursor-pointer disabled:opacity-50'
                         style={{
                             background:

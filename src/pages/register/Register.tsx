@@ -20,6 +20,7 @@ export function Register() {
         {} as RegisterForm,
     )
 
+    const [alertMsg, setAlertMsg] = useState<string>('')
     const [, registerUser] = useMutation<any, RegisterForm>(REGISTER)
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -47,6 +48,13 @@ export function Register() {
                     e.preventDefault()
                     const res = await registerUser({ ...registerForm })
                     if (
+                        res &&
+                        res.data &&
+                        res.data.register.error === 'Error while registering'
+                    ) {
+                        setAlertMsg('Please check the entered info')
+                    }
+                    if (
                         res.data &&
                         res.data.register &&
                         res.data.register.user.id
@@ -56,6 +64,11 @@ export function Register() {
                 }}
             >
                 <div className='mb-1'>
+                    {alertMsg !== '' && (
+                        <div className='text-center font-bold text-red-600 bg-red-100 rounded p-2 my-2'>
+                            {alertMsg}
+                        </div>
+                    )}
                     <Input
                         fieldName='Name'
                         name='name'

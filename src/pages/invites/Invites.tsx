@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from 'urql'
+import { SpinningWheel } from '../../components/spinning-wheel/SpinningWheel'
 import { ACCEPT_INVITE } from '../../graphql/acceptInvite'
 import { GET_INVITES } from '../../graphql/getInvites'
 import { InviteType } from '../../types'
@@ -37,7 +38,8 @@ export function Invites() {
                             (invite, idx) => (
                                 <div
                                     key={idx}
-                                    className='border-2 border-grey2 rounded-md flex flex-col p-4 max-w-lg'
+                                    className='border-2 border-grey2 rounded-md flex flex-col p-4'
+                                    style={{ minWidth: 300 }}
                                 >
                                     <div className='flex items-center'>
                                         <img
@@ -92,7 +94,7 @@ export function Invites() {
                         )}
                     </div>
                 ) : (
-                    <div>spinning wheel</div>
+                    <SpinningWheel />
                 )}
             </div>
         </div>

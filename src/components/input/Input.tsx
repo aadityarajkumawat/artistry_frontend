@@ -7,6 +7,7 @@ interface InputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     type?: string
     disabled?: boolean
+    alert?: string
 }
 
 export function Input(props: InputProps) {

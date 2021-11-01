@@ -14,6 +14,8 @@ interface LoginForm {
 export function Login() {
     const [loginForm, setLoginForm] = useState<LoginForm>({} as LoginForm)
     const { email, password } = loginForm
+
+    const [alertMsg, setAlertMsg] = useState<string>('')
     const router = useHistory()
 
     const [, loginUser] = useMutation<any, LoginForm>(LOGIN)
@@ -42,18 +44,34 @@ export function Login() {
                 onSubmit={async (e) => {
                     e.preventDefault()
                     const res = await loginUser({ ...loginForm })
-                    if (res.data && res.data.login && res.data.login.user.id) {
+                    if (
+                        res &&
+                        res.data &&
+                        res.data.login.error === 'User does not exist'
+                    ) {
+                        setAlertMsg('User does not exist')
+                    } else if (
+                        res.data &&
+                        res.data.login &&
+                        res.data.login.user.id
+                    ) {
                         router.push('/')
                     }
                 }}
             >
                 <div className='mb-1'>
+                    {alertMsg !== '' && (
+                        <div className='text-center font-bold text-red-600 bg-red-100 rounded p-2 my-2'>
+                            {alertMsg}
+                        </div>
+                    )}
                     <Input
                         fieldName='Email'
                         name='email'
                         type='email'
                         onChange={handleChange}
                         value={email}
+                        alert={alertMsg}
                     />
                 </div>
                 <div className='mb-1'>
